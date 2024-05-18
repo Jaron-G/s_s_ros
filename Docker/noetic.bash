@@ -19,6 +19,7 @@ docker run --rm -it \
     --volume="/home/$USER/catkin_ws/src/s_s_ros/src/pkg_robot_gripper:/catkin_ws/src/pkg_robot_gripper" \
     --volume="/home/$USER/catkin_ws/src/s_s_ros/src/pkg_ur10e_gripper:/catkin_ws/src/pkg_ur10e_gripper" \
     --volume="/home/$USER/catkin_ws/src/s_s_ros/src/pkg_ur_gripper_moveit:/catkin_ws/src/pkg_ur_gripper_moveit" \
+    --volume="/home/$USER/catkin_ws/src/s_s_ros/src/pkg_ur10e_gripper_moveit:/catkin_ws/src/pkg_ur10e_gripper_moveit" \
     --volume="/home/$USER/catkin_ws/src/s_s_ros/src/pkg_virtual_camera:/catkin_ws/src/pkg_virtual_camera" \
     --volume="/dev/bus/usb:/dev/bus/usb" \
     --volume="/tmp/.docker.xauth:/tmp/.docker.xauth:rw" \
