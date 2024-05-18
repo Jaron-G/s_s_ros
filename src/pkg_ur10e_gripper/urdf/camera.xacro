@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="camera">
+
+    <xacro:macro name="usb_camera" params="prefix:=camera">
+        <!-- Create laser reference frame -->
+        <link name="${prefix}_link">
+            <inertial>
+                <mass value="0.1" />
+                <origin xyz="0 0 0" />
+                <inertia ixx="0.01" ixy="0.0" ixz="0.0"
+                         iyy="0.01" iyz="0.0"
+                         izz="0.01" />
+            </inertial>
+
+            <visual>
+                <origin xyz=" 0 0 0 " rpy="0 0 0" />
+                <geometry>
+                    <box size="0.10 0.30 0.20" />
+                </geometry>
+                <material name="black">
+                    <color rgba="0.1 0.1 0.1 0.8" />
+                </material>
+            </visual>
+
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.20 0.30 0.10" />
+                </geometry>
+            </collision>
+        </link>
+
+
+        <!-- 在RVIZ中显示点云位姿错误，此处加入一个空连杆和空关节，用于调整点云tf位姿 -->
+        <link name="camera_link_fake"></link>
+        <joint name="camera_joint_fake" type="fixed">
+            <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708 "/>
+            <parent link="camera_link"/>
+            <child link="camera_link_fake"/>
+        </joint>
+
+        <gazebo reference="${prefix}_link">
+            <material>Gazebo/Black</material>
+        </gazebo>
+
+        <gazebo reference="${prefix}_link">
+            <sensor type="depth" name="camera_node">
+                <update_rate>20.0</update_rate>
+                <camera name="head">
+                    <horizontal_fov>1.3962634</horizontal_fov>
+                    <image>
+                        <width>640</width>
+                        <height>480</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.02</near>
+                        <far>3</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.007</stddev>
+                    </noise>
+                </camera>
+                
+                <plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
+                    <baseline>0.2</baseline>
+                    <alwaysOn>true</alwaysOn>
+                    <!-- Keep this zero, update_rate in the parent <sensor> tag
+                        will control the frame rate. -->
+                    <updateRate>0.0</updateRate>
+                    <cameraName>camera_ir</cameraName>
+                    <imageTopicName>/camera/color/image_raw</imageTopicName>
+                    <cameraInfoTopicName>/camera/color/camera_info</cameraInfoTopicName>
+                    <depthImageTopicName>/camera/depth/image_raw</depthImageTopicName>
+                    <depthImageCameraInfoTopicName>/camera/depth/camera_info</depthImageCameraInfoTopicName>
+                    <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
+                    <frameName>camera_link_fake</frameName>
+                    <pointCloudCutoff>0.5</pointCloudCutoff>
+                    <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+                    <distortionK1>0</distortionK1>
+                    <distortionK2>0</distortionK2>
+                    <distortionK3>0</distortionK3>
+                    <distortionT1>0</distortionT1>
+                    <distortionT2>0</distortionT2>
+                    <CxPrime>0</CxPrime>
+                    <Cx>0</Cx>
+                    <Cy>0</Cy>
+                    <focalLength>0</focalLength>
+                    <hackBaseline>0</hackBaseline>
+                </plugin>
+
+            </sensor>
+        </gazebo>
+
+    </xacro:macro>
+</robot>

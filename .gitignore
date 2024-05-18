@@ -154,3 +154,5 @@ cython_debug/
 
 # ignore vscode configuration files and folders
 .vscode/
+
+Docker/noetic.bash
