@@ -24,9 +24,6 @@ docker run --rm -it \
     --volume="/tmp/.docker.xauth:/tmp/.docker.xauth:rw" \
     --net=host \
     --privileged \
-    --env="NVIDIA_DRIVER_CAPABILITIES=all" \
-    --runtime=nvidia \
-    --gpus all \
     ros_noetic_image \
     bash
 
